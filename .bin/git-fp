@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Check if a search term is provided
+if [ -z "$1" ]; then
+  echo "Usage: git fp <search_term>"
+  exit 1
+fi
+
+# Store the search term
+search_term="$1"
+
+# Get the list of files matching the diff with the search term
+files=$(git diff -G "$search_term" --name-only)
+
+# Check if any files match
+if [ -z "$files" ]; then
+  echo "No changes found containing '$search_term'."
+  exit 0
+fi
+
+# Iterate over each file and process hunks interactively
+for file in $files; do
+  # Make "Processing file:" purple and bold, leave the file path in white
+  echo -e "\033[1;35mProcessing file:\033[0m $file\n"
+
+  # Filter hunks matching the search term and stage them interactively
+  temp_patch=$(mktemp)
+  git diff -G "$search_term" "$file" > "$temp_patch"
+
+  # Check if the patch is non-empty
+  if [ -s "$temp_patch" ]; then
+    # Use git apply to stage the matching hunks temporarily
+    git apply --cached "$temp_patch" 2>/dev/null
+
+    # Use git add -p to interactively stage the relevant hunks
+    git add -p "$file"
+  else
+    echo -e "No matching hunks found in $file.\n"
+  fi
+
+  # Clean up the temporary file
+  rm -f "$temp_patch"
+done

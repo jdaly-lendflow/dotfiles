@@ -94,3 +94,4 @@ tmtags
 # Mac OS
 # ----------------------------------------
 .DS_Store
+.husky/*.local

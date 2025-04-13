@@ -1,0 +1,28 @@
+wip() {
+    BOLD_GREEN='\033[1;32m'
+    BOLD_RED='\033[1;31m'
+    NC='\033[0m'
+
+    # Check if any files are already staged
+    if ! git diff --cached --quiet; then
+        # Files are staged, prompt the user for action
+        echo "Files are already staged. Choose an option:"
+        echo "Press Enter: WIP only staged files"
+        echo "Type 'all' + Enter: WIP all files"
+        read -r choice
+
+        if [[ "$choice" == "all" ]]; then
+            git add .
+        fi
+    else
+        git add .
+    fi
+
+    git commit --no-verify -m "WIP"
+
+    if [ $? -eq 0 ]; then
+        echo -e "\n${BOLD_GREEN}WIP commit created.${NC}"
+    else
+        echo -e "\n${BOLD_RED}WIP commit failed.${NC}"
+    fi
+}

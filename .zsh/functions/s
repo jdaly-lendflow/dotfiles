@@ -1,0 +1,5 @@
+s() {
+  local dir
+  dir=$(zoxide query -i "$1") || return
+  cd "$dir" || return
+}

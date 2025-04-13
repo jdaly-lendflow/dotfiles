@@ -9,23 +9,17 @@
   ui = auto
 
 [alias]
-  po = push -u origin HEAD
-  ci = commit
-  co = checkout
+  ci = "!git commit -S --no-edit"
   ap = add --all -p
-  amend = commit --amend
+  amend = commit --amend -S
   aa = add --all
-  ff = merge --ff-only
   b = "git --no-pager branch -vv --sort=-committerdate"
   br = "!git b | head"
-  git = !exec git
-  head = !git l -1
-  h = !git head
-  r = !git l -30
   l = "!git log --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 
 [merge]
   tool = vimdiff
+  commit = no
 
 [core]
 	excludesfile = ~/.gitignore_global

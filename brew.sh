@@ -21,7 +21,7 @@ brew upgrade
 # shell tools
 install bat
 install dust
-install fasd
+install zoxide
 install fd
 install findutils
 install fzf
